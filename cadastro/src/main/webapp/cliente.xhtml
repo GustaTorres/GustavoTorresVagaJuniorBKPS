@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<body>
+
+	<ui:composition template="_template.xhtml">
+
+
+		<ui:define name="titulo">
+			<p:outputLabel>Cadastro de clientes</p:outputLabel>
+		</ui:define>
+
+		<ui:define name="conteudo">
+			<h:form id="cliente">
+				<p:fieldset legend="Dados do cliente">
+					<h:panelGrid columns="6">
+
+						<p:outputLabel value="Razao/Nome:" for="razao"
+							style="float: right;" />
+						<p:inputText id="razao" value="#{clienteBean.cliente.razao}"
+							required="true" requiredMessage="Campo obrigatório">
+							<f:ajax event="blur" render="messageRazao" />
+						</p:inputText>
+
+						<p:message for="razao" id="messageRazao" />
+
+						<p:outputLabel value="CNPJ:" for="cnpj" style="float: right;" />
+						<p:inputMask id="cnpj" value="#{clienteBean.cliente.cnpj}"
+							requiredMessage="Campo obrigatório" mask="99.999.999/9999-99">
+							<f:ajax event="blur" render="messageCNPJ" />
+						</p:inputMask>
+
+						<p:message for="cnpj" id="messageCNPJ" />
+
+
+						<p:outputLabel value="Telefone:" for="telefone"
+							style="float: right;" />
+						<p:inputMask id="telefone" value="#{clienteBean.cliente.telefone}"
+							required="true" requiredMessage="Campo obrigatório"
+							mask="(99)9999-9999">
+							<f:ajax event="blur" render="messageTelefone" />
+						</p:inputMask>
+
+						<p:message for="telefone" id="messageTelefone" />
+
+						<p:outputLabel value="CPF:" for="cpf" style="float: right;" />
+						<p:inputMask id="cpf" value="#{clienteBean.cliente.cpf}"
+							requiredMessage="Campo obrigatório" mask="999.999.999-99">
+							<f:ajax event="blur" render="messageCPF" />
+						</p:inputMask>
+
+						<p:message for="cpf" id="messageCPF" />
+
+
+						<p:outputLabel value="Email:" for="email" style="float: right;" />
+						<p:inputText id="email" value="#{clienteBean.cliente.email}"
+							requiredMessage="Campo obrigatório"
+							validatorMessage="Email invalido">
+							<f:attribute name="type" value="email" />
+							<f:passThroughAttribute name="placeholder"
+								value="exemplo@exemplo.com.br" />
+							<f:validateRegex pattern=".+@.+" />
+							<f:ajax event="blur" render="messageEmail" />
+						</p:inputText>
+
+						<p:message for="email" id="messageEmail" />
+
+						<p:outputLabel value="Logradouro:" for="logradouro"
+							style="float: right;" />
+						<p:inputText id="logradouro"
+							value="#{clienteBean.cliente.logradouro}" required="true"
+							requiredMessage="Campo obrigatório">
+							<f:ajax event="blur" render="messageLogradouro" />
+						</p:inputText>
+
+						<p:message for="logradouro" id="messageLogradouro" />
+
+						<p:outputLabel value="Numero:" for="numero" style="float: right;" />
+						<p:inputText id="numero" value="#{clienteBean.cliente.numero}"
+							required="true" requiredMessage="Campo obrigatório">
+							<f:ajax event="blur" render="messageNumero" />
+						</p:inputText>
+
+						<p:message for="numero" id="messageNumero" />
+
+						<p:outputLabel value="Bairro:" for="bairro" style="float: right;" />
+						<p:inputText id="bairro" value="#{clienteBean.cliente.bairro}"
+							required="true" requiredMessage="Campo obrigatório">
+							<f:ajax event="blur" render="messageBairro" />
+						</p:inputText>
+
+						<p:message for="bairro" id="messageBairro" />
+
+						<p:outputLabel value="CEP:" for="cep" style="float: right;" />
+						<p:inputMask id="cep" value="#{clienteBean.cliente.cep}"
+							required="true" requiredMessage="Campo obrigatório"
+							mask="99999-999">
+							<f:ajax event="blur" render="messageCEP" />
+						</p:inputMask>
+
+						<p:message for="cep" id="messageCEP" />
+
+						<p:outputLabel value="Cidade:" for="cidade" style="float: right;" />
+						<p:inputText id="cidade" value="#{clienteBean.cliente.cidade}"
+							required="true" requiredMessage="Campo obrigatório">
+							<f:ajax event="blur" render="messageCidade" />
+						</p:inputText>
+
+						<p:message for="cidade" id="messageCidade" />
+
+						<p:outputLabel value="UF:" for="uf" style="float: right;" />
+						<p:inputText id="uf" value="#{clienteBean.cliente.uf}"
+							required="true" requiredMessage="Campo obrigatório"
+							validatorMessage="UF inválido">
+							<f:validateLength maximum="2" />
+							<f:ajax event="blur" render="messageUF" />
+						</p:inputText>
+
+						<p:message for="uf" id="messageUF" />
+
+
+
+
+						<p:commandButton value="Gravar" action="#{clienteBean.gravar}"
+							process="@form" update=":formTabelaClientes:tabelaClientes @form" />
+
+					</h:panelGrid>
+				</p:fieldset>
+			</h:form>
+
+			<h:form id="formTabelaClientes">
+				<p:dataTable id="tabelaClientes" value="#{clienteBean.clientes}"
+					var="cliente" resizableColumns="true" liveResize="true"
+					style="margin-bottom:20px" paginator="true" rows="10">
+
+					<f:facet name="header">Clientes cadastrados</f:facet>
+					<p:column headerText="Razão" sortBy="#{cliente.razao}"
+						filterBy="#{cliente.razao}" filterMatchMode="startsWith">
+						<h:outputText value="#{cliente.razao}" />
+					</p:column>
+
+					<p:column headerText="CNPJ" sortBy="#{cliente.cnpj}"
+						filterBy="#{cliente.cnpj}" filterMatchMode="contains">
+						<h:outputText value="#{cliente.cnpj}" />
+					</p:column>
+
+					<p:column headerText="CPF" sortBy="#{cliente.cpf}"
+						filterBy="#{cliente.cpf}" filterMatchMode="contains">
+						<h:outputText value="#{cliente.cpf}" />
+					</p:column>
+
+					<p:column headerText="Logradouro" sortBy="#{cliente.logradouro}"
+						filterBy="#{cliente.logradouro}" filterMatchMode="startsWith">
+						<h:outputText value="#{cliente.logradouro}" />
+					</p:column>
+
+					<p:column headerText="Numero" sortBy="#{cliente.numero}">
+						<h:outputText value="#{cliente.numero}" />
+					</p:column>
+
+					<p:column headerText="Bairro" sortBy="#{cliente.bairro}"
+						filterBy="#{cliente.bairro}" filterMatchMode="startsWith">
+						<h:outputText value="#{cliente.bairro}" />
+					</p:column>
+
+					<p:column headerText="Cidade" sortBy="#{cliente.cidade}"
+						filterBy="#{cliente.cidade}" filterMatchMode="startsWith">
+						<h:outputText value="#{cliente.cidade}" />
+					</p:column>
+
+					<p:column headerText="CEP" sortBy="#{cliente.cep}"
+						filterBy="#{cliente.cep}" filterMatchMode="startsWith">
+						<h:outputText value="#{cliente.cep}" />
+					</p:column>
+
+
+					<p:column headerText="UF" sortBy="#{cliente.uf}"
+						filterBy="#{cliente.uf}" filterMatchMode="startsWith">
+						<h:outputText value="#{cliente.uf}" />
+					</p:column>
+
+					<p:column headerText="Email" sortBy="#{cliente.email}"
+						filterBy="#{cliente.email}" filterMatchMode="contains">
+						<h:outputText value="#{cliente.email}" />
+					</p:column>
+
+					<p:column headerText="Telefone" sortBy="#{cliente.telefone}"
+						filterBy="#{cliente.telefone}" filterMatchMode="startsWith">
+						<h:outputText value="#{cliente.telefone}" />
+					</p:column>
+
+
+
+					<!--<p:column headerText="Alterar">
+						<h:commandLink value="Altera"
+							action="#{livroBean.carregar(livro)}" />
+					</p:column>
+
+					<p:column headerText="Remover">
+						<h:commandLink value="Remove" action="#{livroBean.remover(livro)}" />
+					</p:column>-->
+				</p:dataTable>
+			</h:form>
+		</ui:define>
+		<ui:define name="rodape">
+	Cadastro de clientes
+	</ui:define>
+	</ui:composition>
+
+</body>
+</html>
